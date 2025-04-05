@@ -1,0 +1,23 @@
+services:
+
+  rbeesoft-nginx:
+    build: .
+    image: brecheisen/rbeesoft-nginx-intel:latest
+    platform: linux/amd64
+    container_name: rbeesoft_nginx
+    ports:
+      - 443:443
+      - 80:80
+    volumes:
+      - rbeesoftapptemplate_data:/data/rbeesoftapptemplate
+      - ${CERTIFICATES}/rbeesoft-apps.nl.key:/etc/nginx/certs/rbeesoft-apps.nl.key:ro
+      - ${CERTIFICATES}/rbeesoft-apps.nl.bundle.pem:/etc/nginx/certs/rbeesoft-apps.nl.bundle.pem:ro
+    depends_on:
+      - rbeesoftapptemplate-backend
+
+volumes:
+  rbeesoftapptemplate_data:
+  rbeesoftapptemplate_postgres_data:
+  
+networks:
+  rbeesoft_network:
