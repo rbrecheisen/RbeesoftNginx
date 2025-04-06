@@ -17,3 +17,6 @@ Step 2
 - When new app version works correctly, update original app service in the nginx 
   docker-compose to point to the new image version. Optionally, delete the "test"
   service from docker-compose
+
+# To-do
+- Deploy nginx project to remote VPS
