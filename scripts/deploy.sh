@@ -12,5 +12,4 @@ read -n 1 -s -r -p "Press any key to continue..."
 git add -A && git commit -m "Deploying project RbeesoftNginx" && git push
 
 ssh -i ${PRIVATE_KEY} ${SSH_RALPH} "~/clone-project.sh ${PROJECT_NAME} && cd ~/dev/${PROJECT_NAME} && chmod +x scripts/remote/*.sh"
-ssh -i ${PRIVATE_KEY} ${SSH_ROOT} "cd /home/ralph/dev/${PROJECT_NAME} && scripts/remote/build.sh"
 ssh -i ${PRIVATE_KEY} ${SSH_ROOT} "cd /home/ralph/dev/${PROJECT_NAME} && scripts/remote/run.sh"

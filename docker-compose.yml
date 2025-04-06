@@ -1,8 +1,7 @@
 services:
 
   rbeesoft-nginx:
-    build: .
-    image: brecheisen/rbeesoft-nginx-intel:latest
+    image: nginx:latest-alpine
     platform: linux/amd64
     container_name: rbeesoft_nginx
     ports:
@@ -10,10 +9,53 @@ services:
       - 80:80
     volumes:
       - rbeesoftapptemplate_data:/data/rbeesoftapptemplate
+      - nginx.conf:/etc/nginx/nginx.conf:ro
       - ${CERTIFICATES}/rbeesoft-apps.nl.key:/etc/nginx/certs/rbeesoft-apps.nl.key:ro
       - ${CERTIFICATES}/rbeesoft-apps.nl.bundle.pem:/etc/nginx/certs/rbeesoft-apps.nl.bundle.pem:ro
     depends_on:
       - rbeesoftapptemplate-backend
+
+  ####################################################################################
+  # rbeesoftapptemplate
+  ####################################################################################
+  rbeesoftapptemplate-db:
+    image: postgres:16-alpine
+    container_name: rbeesoftapptemplate_postgres
+    environment:
+      - POSTGRES_DB=db
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=foobar
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d db"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - rbeesoftapptemplate_postgres_data:/var/lib/postgresql/data
+
+  rbeesoftapptemplate-backend:
+    image: brecheisen/rbeesoftapptemplate-backend:0.0.1
+    platform: linux/amd64
+    container_name: rbeesoftapptemplate_backend_001
+    environment:
+      - DATA_DIR=/data
+      - VERSION=0.0.1
+      - POSTGRES_DB=db
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=foobar
+      - POSTGRES_HOST=rbeesoftapptemplate_postgres # When you run Django in Docker set the host
+      - POSTGRES_PORT=5432
+      - DOCKER=1
+      - ADMIN_USER=admin
+      - ADMIN_PASSWORD=admin
+      - SECRET_KEY=f9sd7f97sdf89as7fd98as7d9f7sad9f
+    volumes:
+      - rbeesoftapptemplate_data:/data # /data will be visible in backend app
+    depends_on:
+      rbeesoftapptemplate-db:
+        condition: service_healthy
 
 volumes:
   rbeesoftapptemplate_data:
