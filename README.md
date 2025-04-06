@@ -8,9 +8,12 @@ Step 1 - So what needs to happen? First you need to deploy everything to the rem
 and run everything. This should startup the nginx container but also pull the
 app images from DockerHub.
 
-Step 2 - Build a new app image, e.g., version 0.0.2, using the app project. Then add a
-new service to the nginx docker-compose called <app_name>-backend-new. It should refer
-to the new version image. You can leave the postgres database the same. To be able to 
-access the new service using nginx, you need to update nginx.conf as well and add a new
-server block for the new service. Problem is that the <app_name>.rbeesoft-apps.nl domain
-name points to the new service right away. We don't want that. How do we deal with that?
+Step 2
+- Build a new app image, e.g., version 0.0.2, using the app project
+- Add a test service for the app to the nginx docker-compose. It should refer to
+  the new image version. The test service uses the same postgres service.
+- Add a test upstream and server block to nginx.conf which refers to the subdomain
+  test.rbeesoft-apps.nl
+- When new app version works correctly, update original app service in the nginx 
+  docker-compose to point to the new image version. Optionally, delete the "test"
+  service from docker-compose
