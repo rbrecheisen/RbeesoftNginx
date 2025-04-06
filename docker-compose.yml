@@ -1,7 +1,7 @@
 services:
 
   rbeesoft-nginx:
-    image: nginx:latest-alpine
+    image: nginx:stable-alpine
     platform: linux/amd64
     container_name: rbeesoft_nginx
     ports:
