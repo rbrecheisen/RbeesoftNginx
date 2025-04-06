@@ -57,6 +57,28 @@ services:
       rbeesoftapptemplate-db:
         condition: service_healthy
 
+  rbeesoftapptemplate-backend-test:
+    image: brecheisen/rbeesoftapptemplate-backend:0.0.2
+    platform: linux/amd64
+    container_name: rbeesoftapptemplate_backend_002
+    environment:
+      - DATA_DIR=/data
+      - VERSION=0.0.2
+      - POSTGRES_DB=db
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=foobar
+      - POSTGRES_HOST=rbeesoftapptemplate_postgres # When you run Django in Docker set the host
+      - POSTGRES_PORT=5432
+      - DOCKER=1
+      - ADMIN_USER=admin
+      - ADMIN_PASSWORD=admin
+      - SECRET_KEY=v0r9jvoqev0[qejgweogewjg0w4gd08gdf0g
+    volumes:
+      - rbeesoftapptemplate_data:/data # /data will be visible in backend app
+    depends_on:
+      rbeesoftapptemplate-db:
+        condition: service_healthy
+
 volumes:
   rbeesoftapptemplate_data:
   rbeesoftapptemplate_postgres_data:
