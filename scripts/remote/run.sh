@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export CERTIFICATES=$(cat CERTIFICATES)
-export set REACT_APP_API_BASE_URL="https://test.rbeesoft-apps.nl"
+export REACT_APP_API_BASE_URL="https://test.rbeesoft-apps.nl"
 
 SERVICE_NAME=${1}
 
