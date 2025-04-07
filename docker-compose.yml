@@ -62,6 +62,7 @@ services:
     platform: linux/amd64
     container_name: rbeesoftapptemplate_backend_002
     environment:
+      - REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL}
       - DATA_DIR=/data
       - VERSION=0.0.2
       - POSTGRES_DB=db
