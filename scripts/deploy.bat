@@ -9,7 +9,11 @@ set SSH_IP=185.95.13.93
 set SSH_ROOT=root@%SSH_IP%
 set SSH_RALPH=ralph@%SSH_IP%
 
-echo "Deploying RbeesoftNginx to production..."
+if "%SERVICE_NAME%"=="" (
+    echo "Deploying RbeesoftNginx to production..."
+) else (
+    echo "Deploying %SERVICE_NAME% to production..."
+)
 pause
 
 git add -A && git commit -m "Deploying RbeesoftNginx" && git push
