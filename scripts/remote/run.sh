@@ -2,4 +2,6 @@
 
 export CERTIFICATES=$(cat CERTIFICATES)
 
-docker compose up -d && docker compose logs -f
+SERVICE_NAME=${1}
+
+docker compose up -d ${SERVICE_NAME} && docker compose logs -f ${SERVICE_NAME}
